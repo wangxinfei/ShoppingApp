@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-top-bar',
@@ -6,7 +7,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./top-bar.component.css']
 })
 export class TopBarComponent {
-
+  constructor(public cartService: CartService) {
+  }
+  cartDisabled = this.cartService.items.length == 0;
+  preventNavigation(event: Event) {
+    if (this.cartDisabled) {
+      event.preventDefault();
+    }
+  }
 }
 
 

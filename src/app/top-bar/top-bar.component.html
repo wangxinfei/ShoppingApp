@@ -2,7 +2,11 @@
   <h1>My Store</h1>
 </a>
 
-<a routerLink="/cart" class="button fancy-button"><em class="material-icons">shopping_cart</em>Checkout</a>
+<a routerLink="cartDisabled ? null : '/cart'" 
+class="button fancy-button"
+(click)="preventNavigation($event)"
+>
+  <em class="material-icons">shopping_cart</em>Checkout</a>
 
 
 <!-- 
