@@ -1,1 +1,12 @@
-<p>cart works!</p>
+<h2>Shopping Cart</h2>
+<div *ngFor="let product of cart">
+    <h3>
+      <a [title]="product.name + 'details'"
+         [routerLink]="['/products', product.id]">
+        {{ product.name }}
+      </a>
+    </h3>
+  
+    <p *ngIf="product.description">Description: {{ product.description }}</p>
+  </div>
+  <button (click)="clearCart()">Clear the cart</button>

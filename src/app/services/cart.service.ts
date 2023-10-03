@@ -10,10 +10,10 @@ export class CartService {
   constructor(public productService: ProductService) {}
   items: Product[] = [];
 
-  // getItems() : Observable<Product[]> {
-  //   const cart_list = of(this.items);
-  //   return cart_list;
-  // }
+  getItems() : Observable<Product[]> {
+    const cart_list = of(this.items);
+    return cart_list;
+  }
 
   add(product: Product) {
     this.items.push(product);
