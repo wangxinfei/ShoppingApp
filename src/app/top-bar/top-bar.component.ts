@@ -9,12 +9,12 @@ import { CartService } from '../services/cart.service';
 export class TopBarComponent {
   constructor(public cartService: CartService) {
   }
-  cartDisabled = this.cartService.items.length == 0;
-  preventNavigation(event: Event) {
-    if (this.cartDisabled) {
-      event.preventDefault();
-    }
+  
+  getDynamicRoute(): string {
+    let cartDisabled = this.cartService.items.length == 0;
+    return cartDisabled ? '/dashboard' : '/cart';
   }
+
 }
 
 

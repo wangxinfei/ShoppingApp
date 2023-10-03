@@ -2,9 +2,8 @@
   <h1>My Store</h1>
 </a>
 
-<a routerLink="cartDisabled ? null : '/cart'" 
+<a [routerLink]="getDynamicRoute()" 
 class="button fancy-button"
-(click)="preventNavigation($event)"
 >
   <em class="material-icons">shopping_cart</em>Checkout</a>
 

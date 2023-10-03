@@ -7,7 +7,7 @@
       {{ product.name }}
     </a>
   </h3>
-  <app-cart-counter [product]></app-cart-counter>
+  <app-cart-counter [product] = "product" ></app-cart-counter>
 
   <p *ngIf="product.description">Description: {{ product.description }}</p>
 
