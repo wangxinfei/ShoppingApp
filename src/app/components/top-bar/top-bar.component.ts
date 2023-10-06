@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CartService } from '../services/cart.service';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-top-bar',
@@ -9,10 +9,13 @@ import { CartService } from '../services/cart.service';
 export class TopBarComponent {
   constructor(public cartService: CartService) {
   }
+
+  get cartDisabled(): boolean {
+    return this.cartService.items.length === 0;
+  }
   
   getDynamicRoute(): string {
-    let cartDisabled = this.cartService.items.length == 0;
-    return cartDisabled ? '/dashboard' : '/cart';
+    return this.cartDisabled ? '/dashboard' : '/cart';
   }
 
 }

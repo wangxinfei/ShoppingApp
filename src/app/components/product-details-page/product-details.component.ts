@@ -1,6 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Product, products } from '../products';
+import { Product } from '../../models/products.model';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-product-details',
@@ -11,7 +12,7 @@ import { Product, products } from '../products';
 export class ProductDetailsComponent implements OnInit {
   product: Product | undefined;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private productService: ProductService) {
   }
   ngOnInit() {
     // First get the product id from the current route.
@@ -19,7 +20,10 @@ export class ProductDetailsComponent implements OnInit {
     const productIdFromRoute = Number(routeParams.get('id'));
   
     // Find the product that correspond with the id provided in route.
-    this.product = products.find(product => product.id === productIdFromRoute);
+    this.product = this.productService.findProduct(productIdFromRoute);
+    if (!this.product) {
+      // go back to dashboard page
+    }
   }
 
   share() {
