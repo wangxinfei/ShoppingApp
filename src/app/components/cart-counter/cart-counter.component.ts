@@ -13,8 +13,7 @@ export class CartCounterComponent {
 
   @Input()
   product!: Product;
-
-  count = 0;
+  count=0;
 
   getCountID() {
     return this.cartService.items.filter((item) => item.id == this.product.id).length;

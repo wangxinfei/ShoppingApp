@@ -31,6 +31,7 @@ export class ProductService {
 
   constructor() {
     this.intervalSubscription =interval(3000)
+    // .pipe
     .subscribe(() => {
       const currentList = this.productSubject.getValue();
       const newProduct = this.generateProduct(currentList.length+1);
@@ -40,7 +41,7 @@ export class ProductService {
 
     setTimeout(() => {
       this.stopInterval();
-    }, 60000);
+    }, 30000);
   }
 
   private generateProduct(id: number): Product {
