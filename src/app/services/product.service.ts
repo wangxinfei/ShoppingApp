@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, interval, timeout, Subscribable, Subscription } from 'rxjs';
 import { Product } from '../models/products.model';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,7 @@ export class ProductService {
 
   intervalSubscription: Subscription;
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.intervalSubscription =interval(3000)
     // .pipe
     .subscribe(() => {
