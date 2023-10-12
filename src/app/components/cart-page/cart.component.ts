@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })
-export class CartComponent implements OnInit, OnDestroy{
+export class CartComponent implements OnInit{
   private cartSubscription!: Subscription;
   
   constructor(public cartService: CartService) {}
@@ -16,11 +16,7 @@ export class CartComponent implements OnInit, OnDestroy{
   cart: Product[] = [];
 
   ngOnInit(): void {
-    this.cartSubscription = this.getCart();
-  }
-
-  ngOnDestroy(): void {
-    this.cartSubscription.unsubscribe();
+    this.getCart();
   }
 
   getCart(): Subscription {

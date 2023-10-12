@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CartService } from '../../services/cart.service';
 import { Product } from '../../models/products.model';
 
@@ -8,26 +8,38 @@ import { Product } from '../../models/products.model';
   styleUrls: ['./cart-counter.component.css']
 })
 export class CartCounterComponent {
+  count!: number | void;
   constructor(public cartService: CartService) {
   }
 
   @Input()
   product!: Product;
-  count=0;
 
-  getCountID() {
-    return this.cartService.items.filter((item) => item.id == this.product.id).length;
+  ngOnInit() {
+    this.count = this.getCountID();
+  }
+
+  getCountID(): number {
+    return this.cartService.getCountID();
   }
 
   incrementCount() {
-    this.count++;
     this.cartService.add(this.product);
+    this.count = this.getCountID();
+    console.log(this.count);
+    // this.cartService.cart$.subscribe((data) => {
+      
+    // });
   }
 
   decrementCount() {
-    if (this.count > 0 || this.getCountID() > 0) {
-      this.count--;
+    if (this.count && this.count > 0) {
       this.cartService.remove(this.product);
+      this.count = this.getCountID();
+      console.log(this.count);
+      // this.cartService.cart$.subscribe((data) => {
+      //   this.count = this.getCountID();
+      // });
     }
   }
 

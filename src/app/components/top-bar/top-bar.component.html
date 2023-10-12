@@ -2,7 +2,7 @@
   <h1>My Store</h1>
 </a>
 
-<button id = 'cartButton' [routerLink]="getDynamicRoute()" [disabled]="cartDisabled"
+<button id = 'cartButton' routerLink='/cart' [disabled]="isCountZero"
 class="button fancy-button"
 >
   <em class="material-icons">shopping_cart</em>Checkout</button>

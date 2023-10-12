@@ -1,30 +1,62 @@
 import { Injectable } from '@angular/core';
 import { Product } from '../models/products.model';
 import { ProductService } from './product.service';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, map, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  constructor(public productService: ProductService) {}
-  items: Product[] = [];
+  intervalSubscription: Subscription = new Subscription;
+  cartSubject = new BehaviorSubject<Product[]>([]);
+  cartItemCount = new BehaviorSubject<number>(0);
+  cart$ = this.cartSubject.asObservable();
+  apiUrl = 'http://localhost:3000'
 
-  getItems() : Observable<Product[]> {
-    const cart_list = of(this.items);
-    return cart_list;
+  constructor(public productService: ProductService, private http: HttpClient) { }
+
+
+  getItems(): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.apiUrl}/cart/all`);
+  }
+
+  // Update the count when the cart changes
+  updateCartCount(id: number) {
+    const result = this.cartSubject.value.filter((item) => item.id === id).length;
+    console.log(this.cartSubject.value);
+    this.cartItemCount.next(result);
+  }
+
+  // Now, you can call this function to get the count
+  getCountID(): number {
+    return this.cartItemCount.value;
+  }
+
+  update(): Product[] | void {
+    this.getItems().subscribe((data) => {
+      //this.updateCartCount();
+      return this.cartSubject.next(data);
+    });
   }
 
   add(product: Product) {
-    this.items.push(product);
+    this.http.post(`${this.apiUrl}/cart/add`, product).subscribe(() => {
+      return this.update();
+    })
   }
 
-  remove(product: Product) {
-    let index = this.items.indexOf(product);
-    this.items.splice(index,1);
+  remove(product: object) {
+    this.http.delete(`${this.apiUrl}/cart/delete`, product).subscribe(() => {
+      console.log(product);
+      // this.updateCartCount(product);
+      return this.update();
+    })
   }
 
   clear() {
-    this.items = [];
+    this.http.get(`${this.apiUrl}/cart/clear`).subscribe(() => {
+      return this.update();
+    })
   }
 }

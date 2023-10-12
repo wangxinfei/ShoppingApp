@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CartService } from '../../services/cart.service';
 
 @Component({
@@ -10,19 +10,13 @@ export class TopBarComponent {
   constructor(public cartService: CartService) {
   }
 
-  get cartDisabled(): boolean {
-    return this.cartService.items.length === 0;
+  isCountZero: boolean | undefined;
+
+  ngOnInit(): void {
+    this.cartService.cart$.subscribe((data) => {
+      this.isCountZero = data.length === 0;
+    });
   }
   
-  getDynamicRoute(): string {
-    return this.cartDisabled ? '/dashboard' : '/cart';
-  }
 
 }
-
-
-/*
-Copyright Google LLC. All Rights Reserved.
-Use of this source code is governed by an MIT-style license that
-can be found in the LICENSE file at https://angular.io/license
-*/
