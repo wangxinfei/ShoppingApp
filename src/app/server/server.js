@@ -39,6 +39,7 @@ app.get('/products/all', (req, res) => {
   try {
     // Normal response
     res.json(products);
+    // res.status(200).send('read products');
   } catch (error) {
     console.log(error);
   }
@@ -51,6 +52,7 @@ app.get('/products/detail/:id', (req, res) => {
     const item = products.find((item) => item.id === id);
     if (item) {
       res.json(item);
+      // res.status(200).send('get detail');
     } else {
       res.status(404).json({ message: 'Item not found' });
     }
@@ -62,6 +64,7 @@ app.get('/products/count', (req, res) => {
   try {
     // Normal response
     res.json(products.length);
+    // res.status(200).send('get count of products');
   } catch (error) {
     console.log(error);
   }
@@ -79,6 +82,8 @@ app.get('/cart/all', (req, res) => {
   try {
     // Normal response
     res.json(cart);
+    // res.status(200).send('get cart');
+    
   } catch (error) {
     console.log(error);
   }
@@ -89,6 +94,8 @@ app.get('/cart/count', (req, res) => {
   try {
     // Normal response
     res.json(cart.length);
+    // res.status(200).send('get cart count');
+    
   } catch (error) {
     console.log(error);
   }
@@ -101,6 +108,7 @@ app.get('/cart/count/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const count = cart.filter((item) => item.id == id).length;
     res.json(count);
+    // res.status(200).send('get count of one item');
   } catch (error) {
     console.log(error);
   }
@@ -119,8 +127,7 @@ app.delete('/cart/delete/:id', (req,res) => {
   for (let i = 0; i < cart.length; i++) {
     if (cart[i].id === id) {
       cart.splice(i, 1); // Remove the object at index i
-      console.log(cart);
-      break; // Stop searching after the first match is found
+      return res.status(200).json({message: 'Delete Item'});
     }
   }
 })
@@ -129,4 +136,5 @@ app.delete('/cart/delete/:id', (req,res) => {
 app.get('/cart/clear', (req,res) => {
   cart = [];
   res.json(cart);
+  //res.status(200).send('clear cart');
 })

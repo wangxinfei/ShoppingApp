@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CartService } from '../../services/cart.service';
 import { Product } from '../../models/products.model';
+import { error } from 'console';
 
 @Component({
   selector: 'app-cart-counter',
@@ -44,8 +45,9 @@ export class CartCounterComponent {
       if (this.count && this.count > 0) {
         await this.cartService.remove(this.product.id);
         this.getCount();
-      }}
-       catch {
+      }
+    } catch (error) {
+        console.log(error);
         console.log('delete failed');
       }
     }

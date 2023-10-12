@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, interval, Subscription } from 'rxjs';
+import { BehaviorSubject, interval, Observable, Subscription } from 'rxjs';
 import { Product } from '../models/products.model';
 import { HttpClient } from '@angular/common/http';
 
@@ -26,11 +26,8 @@ export class ProductService {
     return this.http.get<number>(`${this.apiUrl}/products/count`)
   }
 
-
-  getProduct(id: number): Product | void {
-    this.http.get<Product>(`${this.apiUrl}/products/${id.toString()}`).subscribe((data) => {
-      return data;
-    })
+  getProduct(id: number) {
+    return this.http.get(`${this.apiUrl}/products/detail/${id.toString()}`);
   }
 
   startProductCreation() {

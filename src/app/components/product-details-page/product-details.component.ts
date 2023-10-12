@@ -10,7 +10,7 @@ import { ProductService } from '../../services/product.service';
 })
 
 export class ProductDetailsComponent implements OnInit {
-  product: Product | void | undefined;
+  product: Product | undefined;
 
   constructor(private route: ActivatedRoute, private productService: ProductService) {
   }
@@ -20,10 +20,14 @@ export class ProductDetailsComponent implements OnInit {
     const productIdFromRoute = Number(routeParams.get('id'));
   
     // Find the product that correspond with the id provided in route.
-    this.product = this.productService.getProduct(productIdFromRoute);
-    if (!this.product) {
-      // go back to dashboard page
-    }
+    this.productService.getProduct(productIdFromRoute).subscribe((data) => {
+      const JSONString = JSON.stringify(data);
+      const newProduct: Product = JSON.parse(JSONString);
+      this.product = newProduct;
+    })
+    // if (!this.product) {
+    //   // go back to dashboard page
+    // }
   }
 
   share() {

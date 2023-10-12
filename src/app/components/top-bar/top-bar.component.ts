@@ -14,11 +14,13 @@ export class TopBarComponent {
   count: number = 0;
 
   ngOnInit(): void {
+    this.cartService.updateCartCount();
+
     this.cartService.cartCount$.subscribe((length) => {
       this.isCountZero = length === 0;
     });
 
-    this.cartService.getCartCount();
+    // this.cartService.getCartCount();
   }
   
 

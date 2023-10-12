@@ -22,7 +22,7 @@ export class CartService {
     return this.http.get<Product[]>(`${this.apiUrl}/cart/all`);
   }
 
-  getCartCount() {
+  updateCartCount() {
     return this.http.get<number>(`${this.apiUrl}/cart/count`).subscribe((count) => {
       this.cartCountSubject.next(count);
     })
@@ -34,6 +34,7 @@ export class CartService {
 
   update(): Product[] | void {
     this.getCart().subscribe((data) => {
+      this.updateCartCount();
       return this.cartSubject.next(data);
     });
   }
@@ -48,13 +49,9 @@ export class CartService {
   }
 
   remove(id: number): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.http.delete(`${this.apiUrl}/cart/delete/${id}`).subscribe(() => {
-        this.update();
-        resolve();
-      })
-    });
-    
+    return this.http.delete(`${this.apiUrl}/cart/delete/${id}`).toPromise().then(() => {
+      this.update();
+    })
   }
 
   clear() {
