@@ -84,10 +84,23 @@ app.get('/cart/all', (req, res) => {
   }
   });
 
+// get count of cart
 app.get('/cart/count', (req, res) => {
   try {
     // Normal response
     res.json(cart.length);
+  } catch (error) {
+    console.log(error);
+  }
+})
+
+// get count of one item in cart
+app.get('/cart/count/:id', (req, res) => {
+  try {
+    // Normal response
+    const id = parseInt(req.params.id);
+    const count = cart.filter((item) => item.id == id).length;
+    res.json(count);
   } catch (error) {
     console.log(error);
   }
@@ -100,11 +113,19 @@ app.post('/cart/add', (req, res) => {
 })
 
 // delete an item in the cart
-app.delete('/cart/delete', (req,res) => {
-  const id = cart.indexOf(req.body)
-  cart.splice(id,1);
+app.delete('/cart/delete/:id', (req,res) => {
+  const id = parseInt(req.params.id);
+  // cart = cart.filter((item) => item.id != id);
+  for (let i = 0; i < cart.length; i++) {
+    if (cart[i].id === id) {
+      cart.splice(i, 1); // Remove the object at index i
+      console.log(cart);
+      break; // Stop searching after the first match is found
+    }
+  }
 })
 
+// clear the cart
 app.get('/cart/clear', (req,res) => {
   cart = [];
   res.json(cart);

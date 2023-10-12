@@ -11,11 +11,14 @@ export class TopBarComponent {
   }
 
   isCountZero: boolean | undefined;
+  count: number = 0;
 
   ngOnInit(): void {
-    this.cartService.cart$.subscribe((data) => {
-      this.isCountZero = data.length === 0;
+    this.cartService.cartCount$.subscribe((length) => {
+      this.isCountZero = length === 0;
     });
+
+    this.cartService.getCartCount();
   }
   
 

@@ -9,7 +9,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit{
-  private cartSubscription!: Subscription;
   
   constructor(public cartService: CartService) {}
 
@@ -20,7 +19,7 @@ export class CartComponent implements OnInit{
   }
 
   getCart(): Subscription {
-    return this.cartService.getItems()
+    return this.cartService.getCart()
         .subscribe(products => this.cart = products);
   }
 

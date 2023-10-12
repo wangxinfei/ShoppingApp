@@ -8,7 +8,7 @@ import { Product } from '../../models/products.model';
   styleUrls: ['./cart-counter.component.css']
 })
 export class CartCounterComponent {
-  count!: number | void;
+  count!: number | undefined;
   constructor(public cartService: CartService) {
   }
 
@@ -16,31 +16,39 @@ export class CartCounterComponent {
   product!: Product;
 
   ngOnInit() {
-    this.count = this.getCountID();
+    this.getCount();
   }
 
-  getCountID(): number {
-    return this.cartService.getCountID();
+  getCount() {
+    if (this.product) {
+      this.cartService.getItemCount(this.product.id).subscribe((data) => {
+        this.count = data;
+      })
+    } else {
+      this.count = 0;
+    }
+    
   }
 
-  incrementCount() {
-    this.cartService.add(this.product);
-    this.count = this.getCountID();
-    console.log(this.count);
-    // this.cartService.cart$.subscribe((data) => {
-      
-    // });
-  }
-
-  decrementCount() {
-    if (this.count && this.count > 0) {
-      this.cartService.remove(this.product);
-      this.count = this.getCountID();
-      console.log(this.count);
-      // this.cartService.cart$.subscribe((data) => {
-      //   this.count = this.getCountID();
-      // });
+  async incrementCount() {
+    try {
+      await this.cartService.add(this.product);
+      this.getCount();
+    } catch {
+      console.log('add failed');
     }
   }
 
+  async decrementCount() {
+    try {
+      if (this.count && this.count > 0) {
+        await this.cartService.remove(this.product.id);
+        this.getCount();
+      }}
+       catch {
+        console.log('delete failed');
+      }
+    }
+    
 }
+

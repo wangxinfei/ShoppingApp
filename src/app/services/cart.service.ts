@@ -10,48 +10,51 @@ import { HttpClient } from '@angular/common/http';
 export class CartService {
   intervalSubscription: Subscription = new Subscription;
   cartSubject = new BehaviorSubject<Product[]>([]);
-  cartItemCount = new BehaviorSubject<number>(0);
   cart$ = this.cartSubject.asObservable();
+  cartCountSubject = new BehaviorSubject<number>(0);
+  cartCount$ = this.cartCountSubject.asObservable();
   apiUrl = 'http://localhost:3000'
 
   constructor(public productService: ProductService, private http: HttpClient) { }
 
 
-  getItems(): Observable<Product[]> {
+  getCart(): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.apiUrl}/cart/all`);
   }
 
-  // Update the count when the cart changes
-  updateCartCount(id: number) {
-    const result = this.cartSubject.value.filter((item) => item.id === id).length;
-    console.log(this.cartSubject.value);
-    this.cartItemCount.next(result);
+  getCartCount() {
+    return this.http.get<number>(`${this.apiUrl}/cart/count`).subscribe((count) => {
+      this.cartCountSubject.next(count);
+    })
   }
 
-  // Now, you can call this function to get the count
-  getCountID(): number {
-    return this.cartItemCount.value;
+  getItemCount(id: number) {
+    return this.http.get<number>(`${this.apiUrl}/cart/count/${id}`);
   }
 
   update(): Product[] | void {
-    this.getItems().subscribe((data) => {
-      //this.updateCartCount();
+    this.getCart().subscribe((data) => {
       return this.cartSubject.next(data);
     });
   }
 
-  add(product: Product) {
-    this.http.post(`${this.apiUrl}/cart/add`, product).subscribe(() => {
-      return this.update();
-    })
+  add(product: Product): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.http.post(`${this.apiUrl}/cart/add`, product).subscribe(() => {
+        this.update();
+        resolve();
+      })
+    });
   }
 
-  remove(product: object) {
-    this.http.delete(`${this.apiUrl}/cart/delete`, product).subscribe(() => {
-      console.log(product);
-      // this.updateCartCount(product);
-      return this.update();
-    })
+  remove(id: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.http.delete(`${this.apiUrl}/cart/delete/${id}`).subscribe(() => {
+        this.update();
+        resolve();
+      })
+    });
+    
   }
 
   clear() {
