@@ -11,6 +11,7 @@ export class TopBarComponent {
   }
 
   isCountZero: boolean | undefined;
+  haveSigned: boolean | undefined;
   count: number = 0;
 
   ngOnInit(): void {

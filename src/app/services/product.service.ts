@@ -12,6 +12,7 @@ export class ProductService {
   productListSubject = new BehaviorSubject<Product[]>([]);
   products$  = this.productListSubject.asObservable();
   apiUrl = 'http://localhost:3000'
+  apiUrl1 = 'http://localhost:8080'
   
 
   constructor(private http: HttpClient) {
@@ -19,22 +20,22 @@ export class ProductService {
   }
 
   getProductList() {
-    return this.http.get<Product[]>(`${this.apiUrl}/products/all`)
+    return this.http.get<Product[]>(`${this.apiUrl1}/products/all`)
   }
 
   getProductCount() {
-    return this.http.get<number>(`${this.apiUrl}/products/count`)
+    return this.http.get<number>(`${this.apiUrl1}/products/count`)
   }
 
   getProduct(id: number) {
-    return this.http.get(`${this.apiUrl}/products/detail/${id.toString()}`);
+    return this.http.get(`${this.apiUrl1}/products/detail/${id.toString()}`);
   }
 
   startProductCreation() {
     const subscription: Subscription = interval(3000).subscribe(async () => {
       this.getProductCount().subscribe((count) => {
         if (count < 10) {
-          this.generateProduct(count).subscribe(() => {
+          this.generateProduct().subscribe(() => {
             this.updateProductList();
           })
         }
@@ -42,7 +43,7 @@ export class ProductService {
     });
   }
 
-  generateProduct(id: number) {
+  generateProduct() {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
     let name = '';
     const stringLength = 8;
@@ -52,13 +53,13 @@ export class ProductService {
       name += characters.charAt(randomIndex);
     }
     let newProduct = {
-      id: id,
+      id: -1,
       name: name,
       price: randomPrice,
       description: ''
     }
   
-    return this.http.post(`${this.apiUrl}/products/new`, newProduct);
+    return this.http.post(`${this.apiUrl1}/products/new`, newProduct);
   }
 
   updateProductList() {

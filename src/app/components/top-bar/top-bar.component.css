@@ -1,4 +1,11 @@
+.button-container {
+    text-align: right; /* Align the buttons to the right */
+}
 
+.material-icons {
+    margin: 5px; /* Add some margin for spacing between buttons */
+    padding-right: 5px;
+}
 
 /*
 Copyright Google LLC. All Rights Reserved.

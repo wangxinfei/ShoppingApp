@@ -10,6 +10,7 @@ import { ProductAlertsComponent } from './components/product-alerts/product-aler
 import { ProductDetailsComponent } from './components/product-details-page/product-details.component';
 import { CartComponent } from './components/cart-page/cart.component';
 import { CartCounterComponent } from './components/cart-counter/cart-counter.component';
+import { SignInComponent } from './components/sign-in/sign-in.component';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { CartCounterComponent } from './components/cart-counter/cart-counter.com
     ProductAlertsComponent,
     ProductDetailsComponent,
     CartComponent,
-    CartCounterComponent
+    CartCounterComponent,
+    SignInComponent
   ],
   bootstrap: [
     AppComponent
